@@ -1,0 +1,17 @@
+<ion-view view-title="Tasks">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="task in tasks" type="item-text-wrap" >
+        <img ng-show="task.status === 'active'" ng-src="/img/running-man.png">
+        <i ng-hide="task.status === 'active'" class="icon ion-play" ng-click="startTask(task.id)"></i>
+        <i ng-show="task.status === 'active'" class="icon ion-stop"></i>
+        <h2>{{task.name}}</h2>
+        <p>Start Time: {{task.startTime}}</p>
+        <p>Duration: {{task.duration}}</p>
+        <ion-option-button class="button-assertive" ng-click="remove(chat)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
