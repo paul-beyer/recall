@@ -109,7 +109,8 @@ angular.module('starter.services', [])
    }
 
   return {
-    all: function() {
+    all: function(currentUser) {
+      console.log("Get all tasks - current user = " + currentUser);
       return tasks;
     },
     startTask: startTask 
@@ -127,23 +128,57 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('AuthService', function() {
+.service('AuthService', function() {
  
-    var authenticated = false;
+    this.authenticated = false;
+    this.user = '';
     
     this.authenticateUser = function(user, pw){
       console.log("Authenticating user");
-      authenticated = false;
+      authenticated = true;
+      this.user = user;
     }
     this.isAuthenticated = function(){
       return authenticated;
     }
+    this.getCurrentUser = function(){
+      return this.user;
+    }
+    
     
     return {
       authenticateUser : this.authenticateUser,
-      isAuthenticated : this.isAuthenticated
+      isAuthenticated : this.isAuthenticated,
+      getCurrentUser : this.getCurrentUser
       
     };
     
     
-});;
+})
+
+.service('PeopleService', function($http, $q, $ionicLoading) {
+        
+    this.peopleList = function getPeople() {
+        console.log("getPeople being called");
+        var deferred = $q.defer();
+        $ionicLoading.show({ template : 'Loading...'});
+        $http.get("http://demo32-test.apigee.net/person/list")
+            .success(function(data){
+                $ionicLoading.hide();
+                deferred.resolve(data);
+            })
+            .error(function(){
+                console.log("Error while getting people list");
+                $ionicLoading.hide();
+                deferred.reject();
+            });
+        return deferred.promise;
+    }
+        
+  return {
+    getPeople : this.peopleList
+  
+  }
+  
+});
+

@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', []) 
 
 .controller('DashCtrl', function($scope) {})
 
@@ -17,16 +17,25 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('TasksCtrl', function($scope, Tasks) {
+.controller('TasksCtrl', function($scope, Tasks, AuthService, PeopleService) {
   
-  $scope.tasks = Tasks.all();
+ // $scope.tasks = Tasks.all(AuthService.getCurrentUser());
+  PeopleService.getPeople().then(function(data){
+       $scope.people = data.People.Person;
+   });
+  //start test api
+  
+  // PeopleService.getPeople().then(function(data){
+  //     console.log(data.People);
+  // });
   
   $scope.startTask = function(id) {
+    console.log("Current user for start task = " +  AuthService.getCurrentUser());
     Tasks.startTask(id);
   }
-  // $scope.remove = function(chat) {
-  //   Chats.remove(chat);
-  // };
+  $scope.remove = function(chat) {
+    Chats.remove(chat);
+  };
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
@@ -42,16 +51,14 @@ angular.module('starter.controllers', [])
 .controller('LoginCtrl', function($scope, $state, AuthService) {
  
   $scope.data = {};
- 
-  $scope.login = function() {
-    if(AuthService.isAuthenticated() === false){
-      console.log("User is not logged in");
-    }
-   console.log("User = " + $scope.data.username + "- password = " + $scope.data.password);
-    //we'll call a service here to validate the user, but for now just redirect
-    AuthService.authenticateUser($scope.data.username, $scope.data.password);
-    $state.go('tab.tasks');
-  }
   
+  $scope.login = function() {
+    console.log("User = " + $scope.data.username + "- password = " + $scope.data.password);
+    AuthService.authenticateUser($scope.data.username, $scope.data.password);
+    $scope.data.username = '';
+    $scope.data.password = '';
+    $state.go('tab.tasks');
+   
+  }  
   
 });

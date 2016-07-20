@@ -69,11 +69,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  .state('tab.account', {
-    url: '/account',
+  .state('tab.addTask', {
+    url: '/addTask',
     views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
+      'tab-addTask': {
+        templateUrl: 'templates/add/tab-add.html',
         controller: 'AccountCtrl'
       }
     }
@@ -82,7 +82,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
    .state('tab.tasks', {
       url: '/tasks',
       views: {
-        'tab-chats': {
+        'tab-tasks': {
           templateUrl: 'templates/tasks/taskList.html',
           controller: 'TasksCtrl'
         }
